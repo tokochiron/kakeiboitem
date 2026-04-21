@@ -675,3 +675,24 @@ function init() {
 
 
 </body></html>
+<script type="module">
+
+// 既存の state を Firebaseに保存
+setInterval(() => {
+  if (window.saveData && window.state) {
+    saveData(state);
+  }
+}, 2000);
+
+// ページ読み込み時にFirebaseから取得
+(async () => {
+  if (window.loadData) {
+    const data = await loadData();
+    if (data) {
+      state = data;
+      if (typeof r_all === 'function') r_all();
+    }
+  }
+})();
+
+</script>
