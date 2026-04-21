@@ -594,7 +594,53 @@ function init() {
   });
 }
 
-load(); init(); r_all(); sw('e');
+load(); init(); r_all(); sw('e');<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBVSlhKVSYWexghC7ZucFhGCTjhs6LXcYQ",
+  authDomain: "kakeibo-957ed.firebaseapp.com",
+  projectId: "kakeibo-957ed",
+  storageBucket: "kakeibo-957ed.firebasestorage.app",
+  messagingSenderId: "323226191838",
+  appId: "1:323226191838:web:7a746470fe5283f2ecbf4f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 保存
+async function saveToCloud(data) {
+  await setDoc(doc(db, "kakeibo", "main"), data);
+}
+
+// 読み込み
+async function loadFromCloud() {
+  const docSnap = await getDoc(doc(db, "kakeibo", "main"));
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+  return null;
+}
+
+// 上書き
+const oldSave = save;
+save = function() {
+  localStorage.setItem(KEY, JSON.stringify(state));
+  saveToCloud(state);
+};
+
+// 起動時に読み込み
+window.addEventListener("load", async () => {
+  const cloud = await loadFromCloud();
+  if (cloud) {
+    state = cloud;
+    save();
+    r_all();
+  }
+});
+</script>
 </script>
 
 </body></html>
