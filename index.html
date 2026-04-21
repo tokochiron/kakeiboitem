@@ -410,7 +410,41 @@ function r_summary() {
     const tot = et + at;
     gt += tot;
 
-    let body = '';
+    let <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBVSlhKVSYWexghC7ZucFhGCTjhs6LXcYQ",
+  authDomain: "kakeibo-957ed.firebaseapp.com",
+  projectId: "kakeibo-957ed",
+  storageBucket: "kakeibo-957ed.firebasestorage.app",
+  messagingSenderId: "323226191838",
+  appId: "1:323226191838:web:7a746470fe5283f2ecbf4f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function saveData(state) {
+  await setDoc(doc(db, "kakeibo", "main"), {
+    data: state
+  });
+}
+
+async function loadData() {
+  const snap = await getDoc(doc(db, "kakeibo", "main"));
+  if (snap.exists()) {
+    return snap.data().data;
+  }
+  return null;
+}
+
+window.saveData = saveData;
+window.loadData = loadData;
+
+</script>body = '';
     if (!SIMPLE.includes(b.n)) {
       const renderSec = (label, arr, sub) => {
         if (!arr.length) return '';
